@@ -1,5 +1,6 @@
 # quickimagextract
-Small script to extract 3 frames of images at 512, 768, 1024px around the cursor through a gui. quickly extract full res features from image dir. Each click automatically print the next image and record 3 images (if possible) in a subdirectory "processed".
+Small script to extract 3 frames of images at 512, 768, 1024px around the cursor through a gui and resize them to 512px before saving them.
+Quickly extract full res features from image dir. Each click automatically print the next image and save 3 images (if possible) in a subdirectory "processed".
 
 Description (by ChatGPT) : Image Extractor is an interactive tool crafted to quickly extract objects from images for training machine learning models, such as a Lora. The need to maintain the quality of training data led to the creation of this tool, which allows objects to be extracted in full resolution. The program also offers the flexibility of extracting two additional slightly zoomed-out images to aid the flexibility of the model. All extracted images are saved in a resolution of 512x512 pixels, although this can be quickly modified in the code if needed.
 Features
