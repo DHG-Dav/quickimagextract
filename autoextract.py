@@ -40,19 +40,30 @@ def save_cropped_images(image_path, event):
     os.makedirs(cropped_dir, exist_ok=True)
     for i in range(3):
         current_size = size + (increments * i)
-        if original.width < current_size or original.height < current_size:
+
+        # Determine left, right, top, bottom coordinates for cropping
+        left = original_x - (current_size // 2)
+        right = original_x + (current_size // 2)
+        top = original_y - (current_size // 2)
+        bottom = original_y + (current_size // 2)
+
+        # Adjust cropping coordinates to ensure a square shape
+        if left < 0:
+            right += -left
+            left = 0
+        if right > original.width:
+            left -= right - original.width
+            right = original.width
+        if top < 0:
+            bottom += -top
+            top = 0
+        if bottom > original.height:
+            top -= bottom - original.height
+            bottom = original.height
+
+        if right - left < current_size or bottom - top < current_size:
             print(f"Stopping at iteration {i} due to original image size smaller than {current_size}.")
             break
-        left = original_x - (size // 2) - (increments * i)
-        right = original_x + (size // 2) + (increments * i)
-        top = original_y - (size // 2) - (increments * i)
-        bottom = original_y + (size // 2) + (increments * i)
-
-        # Adjust the coordinates if they exceed the image boundaries
-        left = max(0, left)
-        right = min(original.width, right)
-        top = max(0, top)
-        bottom = min(original.height, bottom)
 
         cropped_image = original.crop((left, top, right, bottom))
 
@@ -96,8 +107,6 @@ def update_image():
     label.bind("<ButtonRelease-1>", lambda event: save_cropped_images(image_path, event)) # Événement de relâchement
     label.bind("<B1-Motion>", on_drag) # Événement de déplacement avec le bouton enfoncé
 
-# ... reste du code inchangé
-
 
 def next_image():
     global image_index
@@ -128,9 +137,6 @@ def on_key_press(event):
         previous_image()
     elif event.keysym == 'Right':
         next_image()
-
-
-
 
 folder_path = select_folder()
 if not folder_path:
